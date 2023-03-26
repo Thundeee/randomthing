@@ -6,6 +6,16 @@ let team2 = document.querySelector('.team2');
 
 console.log(form);
 form.addEventListener('submit', function(e) {
+    if (document.querySelectorAll(".player")) {
+        console.log('players exist');
+        let players = document.querySelectorAll('.player');
+        for (let i = 0; i < players.length; i++) {
+            players[i].remove();
+        }
+
+
+        
+    }
  playerArray = [];
   e.preventDefault();
   for (let i = 0; i < form.length -1; i++) {

@@ -38,6 +38,36 @@ form.addEventListener('submit', function(e) {
     for (let i = 0; i < playerArray.length; i++) {
         let playerElement = document.createElement('li');
         playerElement.textContent = playerArray[i];
+        //add pciture element to playerElement
+        let picture = document.createElement('img');
+        picture.width = 25;
+        picture.height = 25;
+        playerElement.appendChild(picture);
+console.log(i);
+        //add picture depending on index
+        switch (i) {
+            case 0:
+            case 1:
+                picture.src = 'Position_Challenger-Top.png'
+                break;
+            case 2:
+            case 3:
+                picture.src = 'Position_Challenger-Jungle.png'
+                break;
+            case 4:
+            case 5:
+                picture.src = 'Position_Challenger-Mid.png'
+                break;
+            case 6:
+            case 7:
+                picture.src = 'Position_Challenger-Bot.png'
+                break;
+            case 8:
+            case 9:
+                picture.src = 'Position_Challenger-Support.png'
+                break;
+        }
+
         playerElement.classList.add('player');
         if (i % 2 === 0) {
             team1.appendChild(playerElement);
@@ -48,5 +78,6 @@ form.addEventListener('submit', function(e) {
             
         }
     }
+
   
 });

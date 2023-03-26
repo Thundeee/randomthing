@@ -40,8 +40,8 @@ form.addEventListener('submit', function(e) {
         playerElement.textContent = playerArray[i];
         //add pciture element to playerElement
         let picture = document.createElement('img');
-        picture.width = 25;
-        picture.height = 25;
+        picture.width = 50;
+        picture.height = 50;
         playerElement.appendChild(picture);
 console.log(i);
         //add picture depending on index

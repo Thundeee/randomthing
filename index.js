@@ -26,13 +26,51 @@ form.addEventListener('submit', function(e) {
         
     playerArray.push(form[i].value);
   }
-  console.log(playerArray);
 
   //randomize the array
     for (let i = playerArray.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         [playerArray[i], playerArray[j]] = [playerArray[j], playerArray[i]];
 
+    }
+  
+    if (localStorage.getItem("data2")){
+        //sjekk for like navn
+        let draft1 = localStorage.getItem("data").split(',')
+        let draft2 = localStorage.getItem("data2").split(',')
+        let draft3 = playerArray
+
+        //check if all arrays has same string on same index
+        for (let i = 0; i < draft1.length; i++) {
+        
+            if (draft1[i] === draft2[i] && draft1[i] === draft3[i] && draft2[i] === draft3[i]) {
+                console.log('same name on same index');
+                console.log(draft1, draft2, draft3)
+                //randomize again
+                for (let i = playerArray.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    [playerArray[i], playerArray[j]] = [playerArray[j], playerArray[i]];
+                }
+                localStorage.setItem("data", playerArray)
+                localStorage.removeItem("data2")
+            
+            } else {
+                console.log('no same name on same index')
+                localStorage.setItem("data", draft2)
+                localStorage.setItem("data2", playerArray)
+            }
+        
+        }
+
+                
+
+    
+    } else if (localStorage.getItem("data")) {
+        localStorage.setItem("data2", playerArray)
+    
+}
+     else {
+        localStorage.setItem("data", playerArray)
     }
 
     for (let i = 0; i < playerArray.length; i++) {
@@ -43,7 +81,6 @@ form.addEventListener('submit', function(e) {
         picture.width = 50;
         picture.height = 50;
         playerElement.appendChild(picture);
-console.log(i);
         //add picture depending on index
         switch (i) {
             case 0:

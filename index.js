@@ -1,120 +1,159 @@
+/* eslint-disable default-case */
 let playerArray;
 
-let form = document.querySelector('.playerForm');
-let team1 = document.querySelector('.team1');
-let team2 = document.querySelector('.team2');
+let form = document.querySelector(".playerForm");
+let team1 = document.querySelector(".team1");
+let team2 = document.querySelector(".team2");
 
 console.log(form);
-form.addEventListener('submit', function(e) {
+form.addEventListener("submit", function (e) {
     if (document.querySelectorAll(".player")) {
-        console.log('players exist');
-        let players = document.querySelectorAll('.player');
+        console.log("players exist");
+        let players = document.querySelectorAll(".player");
         for (let i = 0; i < players.length; i++) {
             players[i].remove();
         }
-
-
-        
     }
- playerArray = [];
-  e.preventDefault();
-  for (let i = 0; i < form.length -1; i++) {
-    if (form[i].value === '') {
-        continue;
-        
-    }
-        
-    playerArray.push(form[i].value);
-  }
-
-  //randomize the array
-    for (let i = playerArray.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [playerArray[i], playerArray[j]] = [playerArray[j], playerArray[i]];
-
-    }
-  
-    if (localStorage.getItem("data2")){
-        //sjekk for like navn
-        let draft1 = localStorage.getItem("data").split(',')
-        let draft2 = localStorage.getItem("data2").split(',')
-        let draft3 = playerArray
-
-        //check if all arrays has same string on same index
-        for (let i = 0; i < draft1.length; i++) {
-        
-            if (draft1[i] === draft2[i] && draft1[i] === draft3[i] && draft2[i] === draft3[i]) {
-                console.log('same name on same index');
-                console.log(draft1, draft2, draft3)
-                //randomize again
-                for (let i = playerArray.length - 1; i > 0; i--) {
-                    let j = Math.floor(Math.random() * (i + 1));
-                    [playerArray[i], playerArray[j]] = [playerArray[j], playerArray[i]];
-                }
-                localStorage.setItem("data", playerArray)
-                localStorage.removeItem("data2")
-            
-            } else {
-                console.log('no same name on same index')
-                localStorage.setItem("data", draft2)
-                localStorage.setItem("data2", playerArray)
-            }
-        
+    playerArray = [];
+    e.preventDefault();
+    for (let i = 0; i < form.length - 1; i++) {
+        if (form[i].value === "") {
+            continue;
         }
 
-                
+        playerArray.push(form[i].value);
+    }
+    let players
 
-    
-    } else if (localStorage.getItem("data")) {
-        localStorage.setItem("data2", playerArray)
-    
-}
-     else {
-        localStorage.setItem("data", playerArray)
+
+    function randomer(arg) {
+        for (let i = arg.length - 1; i > 0; i--) {
+
+            let j = Math.floor(Math.random() * (i + 1));
+            [arg[i], arg[j]] = [arg[j], arg[i]];
+            
+        }
+        return arg;
     }
 
-    for (let i = 0; i < playerArray.length; i++) {
-        let playerElement = document.createElement('li');
-        playerElement.textContent = playerArray[i];
-        //add pciture element to playerElement
-        let picture = document.createElement('img');
-        picture.width = 50;
-        picture.height = 50;
-        playerElement.appendChild(picture);
-        //add picture depending on index
+    //add roles
+function roler(arg) {
+    players = [];
+    for (let i = 0; i < arg.length; i++) {
+        let player = [];
         switch (i) {
             case 0:
             case 1:
-                picture.src = 'Position_Challenger-Top.png'
+                player.push(arg[i]);
+                player.push("TOP");
+                player.push("Position_Challenger-Top.png");
                 break;
             case 2:
             case 3:
-                picture.src = 'Position_Challenger-Jungle.png'
+                player.push(arg[i]);
+                player.push("JUNGLE");
+                player.push("Position_Challenger-Jungle.png");
+
                 break;
             case 4:
             case 5:
-                picture.src = 'Position_Challenger-Mid.png'
+                player.push(arg[i]);
+                player.push("MID");
+                player.push("Position_Challenger-Mid.png");
+
                 break;
             case 6:
             case 7:
-                picture.src = 'Position_Challenger-Bot.png'
+                player.push(arg[i]);
+                player.push("ADC");
+                player.push("Position_Challenger-Bot.png");
                 break;
             case 8:
             case 9:
-                picture.src = 'Position_Challenger-Support.png'
+                player.push(arg[i]);
+                player.push("SUPP");
+                player.push("Position_Challenger-Support.png");
                 break;
         }
+        players.push(player)
+        
+    }
+}
 
-        playerElement.classList.add('player');
-        if (i % 2 === 0) {
-            team1.appendChild(playerElement);
-
-
-        } else {
-            team2.appendChild(playerElement);
+    function checker() {
+        if (localStorage.getItem("data2")) {
+            //sjekk for like navn
+            let draft1 = JSON.parse(localStorage.getItem("data"));
+            let draft2 = JSON.parse(localStorage.getItem("data2"));
+            let draft3 = players;
+            let name;
+            let role;
+            let roleCheck;
+                for (let i = 0; i < draft3.length; i++) {
+                    
+                     name = draft3[i][0];
+                     role = draft3[i][1];
+                    if (draft1.some((player) => player[0] === name) && draft2.some((player) => player[0] === name)) {
+                        if (
+                            draft1.some((player) => player[0] === name && player[1] === role) &&
+                            draft2.some((player) => player[0] === name && player[1] === role)
+                          ) {
+                            roleCheck = true;
+                            break;
+                          }
+                        
+                    }
+                }
             
+                if (roleCheck) {
+                    console.log(name, role)
+                    console.log("roleCheck ble poppa ass vi reroller");
+                    console.log(draft1, draft2, draft3);
+                    //randomize draft 3
+                    randomer(playerArray)
+                    roler(playerArray)
+                    checker()
+                } else {
+                    console.log(draft1, draft2, draft3);
+                    console.log("no same name on same index");
+                    localStorage.setItem("data", JSON.stringify(draft2));
+                    localStorage.setItem("data2", JSON.stringify(players));
+                }
+            
+        } else if (localStorage.getItem("data")) {
+            localStorage.setItem("data2", JSON.stringify(players));
+        } else {
+            localStorage.setItem("data", JSON.stringify(players));
         }
     }
 
-  
+
+    randomer(playerArray)
+    roler(playerArray)
+    checker()
+    dommer(players)
+
+
 });
+
+
+    function dommer(arg) {
+        for (let i = 0; i < arg.length; i++) {
+            let playerElement = document.createElement("li");
+            playerElement.textContent = arg[i][0];
+    
+            let picture = document.createElement("img");
+            picture.width = 50;
+            picture.height = 50;
+            picture.src = arg[i][2]
+            playerElement.appendChild(picture);
+    
+    
+            playerElement.classList.add("player");
+            if (i % 2 === 0) {
+                team1.appendChild(playerElement);
+            } else {
+                team2.appendChild(playerElement);
+            }
+        }
+    }

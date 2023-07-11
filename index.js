@@ -21,7 +21,8 @@ form.addEventListener("submit", function (e) {
             continue;
         }
 
-        playerArray.push(form[i].value);
+        playerArray.push(form[i].value)
+        console.log(playerArray)
     }
     let players
 
